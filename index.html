@@ -1,0 +1,25 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<script src="js/chess.js"></script>
+	<title>test</title>
+</head>
+<body>
+	<div id="board" style="width: 220px; font-family: Courier"></div>
+
+	<script type="text/javascript">
+		var chess = new Chess();
+		chess.move('e4');
+		var s = chess.move('d5');
+
+	//alert(s.from);
+
+	var board = chess.ascii().replace(/\+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\+/g, "");
+	var board = board.replace(/a/g, "0 | a");
+	var board = board.replace(/h/g, "h |");
+	document.getElementById("board").textContent=board;
+	//alert(chess.ascii());
+</script>
+
+</body>
+</html>
