@@ -1,25 +1,67 @@
-<html>
+<html lang="en">
 <head>
+	<!-- Required meta tags -->
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+	<title>Chess v0.1</title>
+
+	<link rel="stylesheet" href="/css/bootstrap.css">
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 	<script src="js/chess.js"></script>
-	<title>test</title>
 </head>
 <body>
-	<div id="board" style="width: 220px; font-family: Courier"></div>
+	
 
-	<script type="text/javascript">
+	<div class="container">
+
+		<div class="row">
+			<div class="col">
+				<div id="board" class="mx-auto" style="width: 220px; font-family: Courier"></div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col">
+				<div id="buttons">
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="basic-addon1">f4 или Na3</span>
+						</div>
+						<input id="input_move" type="text" class="form-control" placeholder="" aria-label="Username" aria-describedby="basic-addon1">
+					</div>
+					<button id="button_move" type="button" class="btn btn-success">Move</button>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<script>
+		function board_draw() {
+			var board = chess.ascii().replace(/\+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\+/g, "");
+			board = board.replace(/a/g, "0 | a");
+			board = board.replace(/h/g, "h |");
+			$( "#board" ).text(board);
+		}
+
 		var chess = new Chess();
-		chess.move('e4');
-		var s = chess.move('d5');
 
-	//alert(s.from);
+		board_draw();
 
-	var board = chess.ascii().replace(/\+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\+/g, "");
-	var board = board.replace(/a/g, "0 | a");
-	var board = board.replace(/h/g, "h |");
-	document.getElementById("board").textContent=board;
-	//alert(chess.ascii());
-</script>
+		$( "#button_move" ).click(function() {
+			console.log("button move press");
+			var move = $("#input_move").val();
+			
 
+			var out = chess.move(move);
+			console.log(out);
+			board_draw();
+		});
+
+	</script>
+
+	
 </body>
+<script src="js/bootstrap.js"></script>
 </html>
