@@ -5,60 +5,123 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/style.css">
 	<title>Chess v0.1</title>	
 </head>
 <body>
 	
-
+	<div id="board2" class="mx-auto"></div>
 	<div class="container">
 
 		<div class="row">
 			<div class="col">
-				<div id="board" class="mx-auto" style="width: 220px; font-family: Courier"></div>
+				
+				
+				
 			</div>
 		</div>
 
-		<div class="row">
-			<div class="col">
-				<div id="buttons">
-					<div class="input-group mb-3">
-						<div class="input-group-prepend">
-							<span class="input-group-text" id="basic-addon1">f4 или Na3</span>
-						</div>
-						<input id="input_move" type="text" class="form-control" placeholder="" aria-label="Username" aria-describedby="basic-addon1">
-					</div>
-					<button id="button_move" type="button" class="btn btn-success">Move</button>
-				</div>
-			</div>
-		</div>
+		
+
+		
 
 	</div>
+
 
 </body>
 <script type="text/javascript" src="js/chess.js"></script>
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script>
-		function board_draw() {
-			var board = chess.ascii().replace(/\+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\+/g, "");
-			board = board.replace(/a/g, "0 | a");
-			board = board.replace(/h/g, "h |");
-			$( "#board" ).text(board);
+
+		function drawing_board() {
+
+			var div_name = "#board2";
+			var square_wh = $( window ).width() / 8;
+			var color_w = "bg-light";
+			var color_b = "bg-info";
+			var color;
+			var color_step = 1;
+			var table = "<table class=\"chess_board\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">";
+			var arrabc = ["a", "b", "c", "d", "e", "f", "g", "h"];
+			var figure;
+
+			$(div_name).html("");
+
+			for (var y = 0; y <= 7; y++) {//abc
+				table += "<tr>";
+				if (color_step ==1) {
+					color_step = 2;
+				} else {
+					color_step = 1;
+				}
+				for (var x = 0; x <= 7; x++) {//012
+					if (color_step == 1) {
+						color = color_b;
+						color_step = 2;
+					} else {
+						color = color_w;
+						color_step = 1;
+					}
+					if (board_arr[y][x] != null) {
+						var t = board_arr[y][x].type;
+						var c = board_arr[y][x].color;
+						if (t == "r") {figure = "r" + c + ".png";}//rook
+						if (t == "n") {figure = "n" + c + ".png";}//knight
+						if (t == "b") {figure = "b" + c + ".png";}//bishop
+						if (t == "q") {figure = "q" + c + ".png";}//queen
+						if (t == "k") {figure = "k" + c + ".png";}//kong
+						if (t == "p") {figure = "p" + c + ".png";}//pawn
+						var img = "<img src=\"img/figures/" + figure + "\" width=\"" + square_wh + "\" height=\"" + square_wh + "\">";
+					} else {
+						var img = "";
+					}
+					
+
+					table += "<td><div id=\""+ arrabc[x] + (8 - y) +"\" class=\""+color+"\" style=\"width: "+square_wh+"px; height: "+square_wh+"px\">" + img + "</div></td>";
+				}
+				table += "</tr>";
+
+			}
+			table += "</table>";
+			$(div_name).append(table);
+			
 		}
 
+		function move() {
+			var from, to;
+			var check = 0;
+			$( "#board2 > table > tbody > tr > td > div" ).each(function( event ) {
+  				$( this ).click(function() {
+  					var position = $( this ).attr("id");
+  					//console.log(position);
+  					check++;
+  					if (check == 1) {
+  						from = position;
+  						console.log("from: " + from);
+  					}
+  					if (check == 2) {
+  						to= position;
+  						console.log("to: " + to);
+  						var result = chess.move({ from: from, to: to });
+  						console.log(result);
+  						board_arr = chess.board();
+  						console.log(board_arr);
+  						drawing_board();
+  						move();
+  						check = 0;
+  					}
+  				});
+			});
+		}
+
+		
+
 		var chess = new Chess();
-
-		board_draw();
-
-		$( "#button_move" ).click(function() {
-			console.log("button move press");
-			var move = $("#input_move").val();
-			
-
-			var out = chess.move(move);
-			console.log(out);
-			board_draw();
-		});
+		var board_arr = chess.board();
+		console.log(board_arr);
+		drawing_board();
+		move();
 
 	</script>
 </html>
