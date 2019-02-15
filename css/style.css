@@ -1,3 +1,20 @@
 .chess_board {
-	
+
+}
+
+.square {
+	display:inline-block;   
+    position:relative;
+}
+
+.square span {
+    display:inline-block;
+    position:absolute;
+    top:40%;   
+    left:5%;
+     
+    /* Оформление текста */
+    color:#83C6F9;
+    font-size:20px; 
+    font-weight: bold;
 }

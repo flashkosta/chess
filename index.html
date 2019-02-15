@@ -1,127 +1,161 @@
 <html lang="en">
+
 <head>
-	<!-- Required meta tags -->
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<!-- Bootstrap CSS -->
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/style.css">
-	<title>Chess v0.1</title>	
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Chess v0.1</title>
 </head>
+
 <body>
-	
-	<div id="board2" class="mx-auto"></div>
-	<div class="container">
 
-		<div class="row">
-			<div class="col">
-				
-				
-				
-			</div>
-		</div>
+    <div id="board2" class="mx-auto"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
 
-		
-
-		
-
-	</div>
-
+            </div>
+        </div>
+    </div>
 
 </body>
 <script type="text/javascript" src="js/chess.js"></script>
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script>
+    div_name = "#board2";
 
-		function drawing_board() {
+    function drawing_board() {
 
-			var div_name = "#board2";
-			var square_wh = $( window ).width() / 8;
-			var color_w = "bg-light";
-			var color_b = "bg-info";
-			var color;
-			var color_step = 1;
-			var table = "<table class=\"chess_board\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">";
-			var arrabc = ["a", "b", "c", "d", "e", "f", "g", "h"];
-			var figure;
+        var div_name = "#board2";
+        var square_wh = $(window).width() / 8;
+        var color_w = "bg-light";
+        var color_b = "bg-info";
+        var color;
+        var color_step = 1;
+        var table = "<table class=\"chess_board\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">";
+        var arrabc = ["a", "b", "c", "d", "e", "f", "g", "h"];
+        var figure;
+        var coordinates;
+        var coord_abc = ["a", "b", "c", "d", "e", "f", "g", "h"];
 
-			$(div_name).html("");
+        $(div_name).html("");
 
-			for (var y = 0; y <= 7; y++) {//abc
-				table += "<tr>";
-				if (color_step ==1) {
-					color_step = 2;
-				} else {
-					color_step = 1;
-				}
-				for (var x = 0; x <= 7; x++) {//012
-					if (color_step == 1) {
-						color = color_b;
-						color_step = 2;
-					} else {
-						color = color_w;
-						color_step = 1;
-					}
-					if (board_arr[y][x] != null) {
-						var t = board_arr[y][x].type;
-						var c = board_arr[y][x].color;
-						if (t == "r") {figure = "r" + c + ".png";}//rook
-						if (t == "n") {figure = "n" + c + ".png";}//knight
-						if (t == "b") {figure = "b" + c + ".png";}//bishop
-						if (t == "q") {figure = "q" + c + ".png";}//queen
-						if (t == "k") {figure = "k" + c + ".png";}//kong
-						if (t == "p") {figure = "p" + c + ".png";}//pawn
-						var img = "<img src=\"img/figures/" + figure + "\" width=\"" + square_wh + "\" height=\"" + square_wh + "\">";
-					} else {
-						var img = "";
-					}
-					
+        for (var y = 0; y <= 7; y++) { //abc
+            table += "<tr>";
+            if (color_step == 1) {
+                color_step = 2;
+            } else {
+                color_step = 1;
+            }
+            for (var x = 0; x <= 7; x++) { //012
+                if (color_step == 1) {
+                    color = color_b;
+                    color_step = 2;
+                } else {
+                    color = color_w;
+                    color_step = 1;
+                }
+                if (board_arr[y][x] != null) {
+                    var t = board_arr[y][x].type;
+                    var c = board_arr[y][x].color;
+                    if (t == "r") {
+                        figure = "r" + c + ".png";
+                    } //rook
+                    if (t == "n") {
+                        figure = "n" + c + ".png";
+                    } //knight
+                    if (t == "b") {
+                        figure = "b" + c + ".png";
+                    } //bishop
+                    if (t == "q") {
+                        figure = "q" + c + ".png";
+                    } //queen
+                    if (t == "k") {
+                        figure = "k" + c + ".png";
+                    } //kong
+                    if (t == "p") {
+                        figure = "p" + c + ".png";
+                    } //pawn
 
-					table += "<td><div id=\""+ arrabc[x] + (8 - y) +"\" class=\""+color+"\" style=\"width: "+square_wh+"px; height: "+square_wh+"px\">" + img + "</div></td>";
-				}
-				table += "</tr>";
+                    var img = "<img src=\"img/figures/" + figure + "\" width=\"" + (square_wh - 5) + "\" height=\"" + (square_wh - 5) + "\">";
+                } else {
+                    var img = "";
+                }
+                if (x == 0) { //coordinates 123
+                    if (y <= 7) {
+                        coordinates = 8 - y;
+                        if (y == 7) {
+                            coordinates += "a";
+                        }
+                    }
+                } else if (y == 7) { //coordinates ABC
+                    if (x <= 7) {
+                        coordinates = coord_abc[x];
+                    }
+                } else {
+                    coordinates = "";
+                }
+                table += "<td><div align=\"center\" id=\"" + arrabc[x] + (8 - y) + "\" class=\"" + color + " square\" style=\"width: " + square_wh + "px; height: " + square_wh + "px\">" + img + "<span>" + coordinates + "</span></div></td>";
+            }
+            table += "</tr>";
+        }
+        table += "</table>";
+        $(div_name).append(table);
+    }
 
-			}
-			table += "</table>";
-			$(div_name).append(table);
-			
-		}
+    function move() {
+        var from, to;
+        var check = 0;
+        $(div_name + " > table > tbody > tr > td > div").each(function(event) {
+            $(this).mouseup(function() {
+                $(this).removeClass("bg-light");
+                $(this).removeClass("bg-info");
+                $(this).addClass("bg-warning");
+                var position = $(this).attr("id");
+                //console.log(position);
+                check++;
+                if (check == 1) {
+                    from = position;
+                    console.log("from: " + from);
+                }
+                if (check == 2) {
+                    to = position;
+                    console.log("to: " + to);
+                    var result = chess.move({
+                        from: from,
+                        to: to
+                    });
+                    console.log(result);
+                    board_arr = chess.board();
+                    console.log(board_arr);
+                    drawing_board();
+                    move();
 
-		function move() {
-			var from, to;
-			var check = 0;
-			$( "#board2 > table > tbody > tr > td > div" ).each(function( event ) {
-  				$( this ).click(function() {
-  					var position = $( this ).attr("id");
-  					//console.log(position);
-  					check++;
-  					if (check == 1) {
-  						from = position;
-  						console.log("from: " + from);
-  					}
-  					if (check == 2) {
-  						to= position;
-  						console.log("to: " + to);
-  						var result = chess.move({ from: from, to: to });
-  						console.log(result);
-  						board_arr = chess.board();
-  						console.log(board_arr);
-  						drawing_board();
-  						move();
-  						check = 0;
-  					}
-  				});
-			});
-		}
+                    //после хода, подсвечиваем квадрат под фигурой и добавляем click на div доски, что бы при следующем шаге убрать текущую подсветку
+                    var class_current = $("#" + to).attr("class");
+                    console.log(class_current);
+                    $("#" + to).removeClass("bg-light");
+                    $("#" + to).removeClass("bg-info");
+                    $("#" + to).addClass("bg-warning");
+                    $(div_name).click(function() {
+                        $("#" + to).removeClass("bg-warning");
+                        $("#" + to).addClass(class_current);
+                    });
+                    check = 0;
+                }
+            });
+        });
+    }
 
-		
+    var chess = new Chess();
+    var board_arr = chess.board();
+    console.log(board_arr);
+    drawing_board();
+    move();
+</script>
 
-		var chess = new Chess();
-		var board_arr = chess.board();
-		console.log(board_arr);
-		drawing_board();
-		move();
-
-	</script>
 </html>
