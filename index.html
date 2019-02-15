@@ -136,15 +136,15 @@
                     move();
 
                     //после хода, подсвечиваем квадрат под фигурой и добавляем click на div доски, что бы при следующем шаге убрать текущую подсветку
-                    var class_current = $("#" + to).attr("class");
-                    console.log(class_current);
-                    $("#" + to).removeClass("bg-light");
-                    $("#" + to).removeClass("bg-info");
-                    $("#" + to).addClass("bg-warning");
-                    $(div_name).click(function() {
-                        $("#" + to).removeClass("bg-warning");
-                        $("#" + to).addClass(class_current);
-                    });
+                    //var class_current = $("#" + to).attr("class");
+                    //console.log(class_current);
+                    //$("#" + to).removeClass("bg-light");
+                    //$("#" + to).removeClass("bg-info");
+                    //$("#" + to).addClass("bg-warning");
+                    //$(div_name).click(function() {
+                    //    $("#" + to).removeClass("bg-warning");
+                    //    $("#" + to).addClass(class_current);
+                    //});
                     check = 0;
                 }
             });
