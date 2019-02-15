@@ -16,7 +16,8 @@
     <div class="container">
         <div class="row">
             <div class="col">
-
+                <div id="turn"></div>
+                <div id="pgn"></div>
             </div>
         </div>
     </div>
@@ -26,7 +27,8 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script>
-    div_name = "#board2";
+    var div_name = "#board2";
+    var pgn, turn;
 
     function drawing_board() {
 
@@ -105,6 +107,18 @@
         }
         table += "</table>";
         $(div_name).append(table);
+        
+        //turn
+        turn = chess.turn();
+        if (turn == "b") {
+            turn = "Ход черных";
+        } else {
+            turn = "Ход белых";
+        }
+        $("#turn").text(turn);
+        //PGN
+        pgn = chess.pgn();
+        $("#pgn").text(pgn);
     }
 
     function move() {
@@ -125,26 +139,17 @@
                 if (check == 2) {
                     to = position;
                     console.log("to: " + to);
-                    var result = chess.move({
+                    var result = chess.move({//ходим
                         from: from,
-                        to: to
+                        to: to,
+                        promotion: "q"
                     });
                     console.log(result);
                     board_arr = chess.board();
                     console.log(board_arr);
                     drawing_board();
                     move();
-
-                    //после хода, подсвечиваем квадрат под фигурой и добавляем click на div доски, что бы при следующем шаге убрать текущую подсветку
-                    //var class_current = $("#" + to).attr("class");
-                    //console.log(class_current);
-                    //$("#" + to).removeClass("bg-light");
-                    //$("#" + to).removeClass("bg-info");
-                    //$("#" + to).addClass("bg-warning");
-                    //$(div_name).click(function() {
-                    //    $("#" + to).removeClass("bg-warning");
-                    //    $("#" + to).addClass(class_current);
-                    //});
+                    
                     check = 0;
                 }
             });
@@ -152,6 +157,7 @@
     }
 
     var chess = new Chess();
+    //chess.load("rnbqkbnr/pppppppp/8/8/8/8/8/RNBQK2R w - - 0 1");
     var board_arr = chess.board();
     console.log(board_arr);
     drawing_board();
