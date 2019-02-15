@@ -10,11 +10,11 @@
 .square span {
     display:inline-block;
     position:absolute;
-    top:40%;   
+    top:50%;   
     left:5%;
      
     /* Оформление текста */
     color:#83C6F9;
-    font-size:20px; 
+    font-size:15px; 
     font-weight: bold;
 }

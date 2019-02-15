@@ -16,6 +16,7 @@
     <div class="container">
         <div class="row">
             <div class="col">
+                <div id="gameover"><span style="color: brown"></span></div>
                 <div id="turn"></div>
                 <div id="pgn"></div>
             </div>
@@ -27,10 +28,11 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script>
+    //объявляем переменные
     var div_name = "#board2";
-    var pgn, turn;
+    var pgn, turn, if_gameover, if_check, if_mate, if_stalemate;
 
-    function drawing_board() {
+    function drawing_board() {//рисуем доску
 
         var div_name = "#board2";
         var square_wh = $(window).width() / 8;
@@ -61,7 +63,7 @@
                     color = color_w;
                     color_step = 1;
                 }
-                if (board_arr[y][x] != null) {
+                if (board_arr[y][x] != null) {//если квадрат доски не пустой, читаем фигуру и формируем тег img
                     var t = board_arr[y][x].type;
                     var c = board_arr[y][x].color;
                     if (t == "r") {
@@ -87,14 +89,14 @@
                 } else {
                     var img = "";
                 }
-                if (x == 0) { //coordinates 123
+                if (x == 0) { //coordinates 123 отрисовка координат цифровых
                     if (y <= 7) {
                         coordinates = 8 - y;
                         if (y == 7) {
                             coordinates += "a";
                         }
                     }
-                } else if (y == 7) { //coordinates ABC
+                } else if (y == 7) { //coordinates ABC отрисовка координат буквенных
                     if (x <= 7) {
                         coordinates = coord_abc[x];
                     }
@@ -108,6 +110,22 @@
         table += "</table>";
         $(div_name).append(table);
         
+        //check game over
+        if_gameover = chess.game_over();
+        //шаг
+        if_check = chess.in_check();
+        //мат
+        if_mate = chess.in_checkmate();
+        //пат
+        if_stalemate = chess.in_stalemate();
+        
+        var mess = "";
+        if (if_gameover) {mess += "Игра окончена!";}
+        if (if_check) {mess += " Шаг!";}
+        if (if_mate) {mess += " Мат!";}
+        if (if_stalemate) {mess += " Пат!";}
+        
+        $("#gameover > span").text(mess);
         //turn
         turn = chess.turn();
         if (turn == "b") {
