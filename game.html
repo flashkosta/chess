@@ -30,8 +30,14 @@
 <script>
     //объявляем переменные
     var div_name = "#board2";
-    var pgn, turn, if_gameover, if_check, if_mate, if_stalemate;
+    var pgn, turn, if_gameover, if_check, if_mate, if_stalemate, result;
 
+    function PGNLive(pgn) {
+        var notation = pgn;
+        
+        $("#pgn").text(pgn);
+    }
+    
     function drawing_board() {//рисуем доску
 
         var div_name = "#board2";
@@ -157,7 +163,7 @@
                 if (check == 2) {
                     to = position;
                     console.log("to: " + to);
-                    var result = chess.move({//ходим
+                    result = chess.move({//ходим
                         from: from,
                         to: to,
                         promotion: "q"
@@ -175,7 +181,7 @@
     }
 
     var chess = new Chess();
-    chess.load("r2qr1k1/1Qp2ppp/p2p4/4b3/8/1PN5/P4PPP/2R1R1K1 b - - 0 1");
+    //chess.load("r2qr1k1/1Qp2ppp/p2p4/4b3/8/1PN5/P4PPP/2R1R1K1 b - - 0 1");
     var board_arr = chess.board();
     console.log(board_arr);
     drawing_board();

@@ -13,16 +13,8 @@
 <body class="bg-light">
     <div class="container">
 
-        <div class="row">
-            <div class="col">
-            </div>
-
-            <div align="center" class="col">
-                <img class="logo" src="img/logo.png">
-            </div>
-            <div class="col">
-
-            </div>
+        <div class="mx-auto" style="width: 128px;">
+            <img class="logo" src="img/logo.png">
         </div>
 
         <div class="row">
@@ -32,9 +24,9 @@
             <div class="col-10">
 
                 <div id="error" class="alert alert-danger" role="alert">
-                    
+
                 </div>
-                
+
                 <form>
                     <div class="form-group">
 
@@ -67,7 +59,7 @@
 <script src="js/bootstrap.min.js"></script>
 
 <script>
-    $("#error").hide();//hide error div
+    $("#error").hide(); //hide error div
     $("#button_enter").click(function() {
         var error_mess = "";
         var login = $("#login").val();
@@ -90,7 +82,7 @@
         if (pass.match("^[a-zA-Z0-9 ]*$") == null) {
             error_mess += " Пароль должен состоять только из латинских символов и цифр!";
         }
-        
+
         if (error_mess == "") {
             window.location = "menu.html";
             localStorage.login = login;
@@ -100,7 +92,7 @@
             $("#error").text(error_mess)
             $("#error").show();
         }
-        
+
         console.log(login);
         console.log(pass);
     });
