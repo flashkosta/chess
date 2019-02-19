@@ -10,176 +10,101 @@
     <title>Chess v0.1</title>
 </head>
 
-<body>
-
-    <div id="board2" class="mx-auto"></div>
+<body class="bg-light">
     <div class="container">
+
         <div class="row">
             <div class="col">
-                <div id="gameover"><span style="color: brown"></span></div>
-                <div id="turn"></div>
-                <div id="pgn"></div>
+            </div>
+
+            <div align="center" class="col">
+                <img class="logo" src="img/logo.png">
+            </div>
+            <div class="col">
+
             </div>
         </div>
-    </div>
 
+        <div class="row">
+            <div class="col-1">
+            </div>
+
+            <div class="col-10">
+
+                <div id="error" class="alert alert-danger" role="alert">
+                    
+                </div>
+                
+                <form>
+                    <div class="form-group">
+
+                        <input type="text" class="form-control" id="login" placeholder="Ведите логин">
+                        <small id="emailHelp" class="form-text text-muted">Только латинские символы и цифры.</small>
+                    </div>
+                    <div class="form-group">
+
+                        <input type="password" class="form-control" id="pass" placeholder="Ведите пароль">
+                        <small id="emailHelp" class="form-text text-muted">Пароль должен быть надежным.</small>
+                    </div>
+                </form>
+
+                <button id="button_enter" type="button" class="btn btn-info btn-lg btn-block mb-3">Войти</button>
+
+            </div>
+            <div class="col-1">
+
+            </div>
+        </div>
+
+        <div class="fixed-bottom text-center">
+            <h4>С.В. Конотоп &copy;</h4>
+        </div>
+
+    </div>
 </body>
-<script type="text/javascript" src="js/chess.js"></script>
+
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+
 <script>
-    //объявляем переменные
-    var div_name = "#board2";
-    var pgn, turn, if_gameover, if_check, if_mate, if_stalemate;
-
-    function drawing_board() {//рисуем доску
-
-        var div_name = "#board2";
-        var square_wh = $(window).width() / 8;
-        var color_w = "bg-light";
-        var color_b = "bg-info";
-        var color;
-        var color_step = 1;
-        var table = "<table class=\"chess_board\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">";
-        var arrabc = ["a", "b", "c", "d", "e", "f", "g", "h"];
-        var figure;
-        var coordinates;
-        var coord_abc = ["a", "b", "c", "d", "e", "f", "g", "h"];
-
-        $(div_name).html("");
-
-        for (var y = 0; y <= 7; y++) { //abc
-            table += "<tr>";
-            if (color_step == 1) {
-                color_step = 2;
-            } else {
-                color_step = 1;
-            }
-            for (var x = 0; x <= 7; x++) { //012
-                if (color_step == 1) {
-                    color = color_b;
-                    color_step = 2;
-                } else {
-                    color = color_w;
-                    color_step = 1;
-                }
-                if (board_arr[y][x] != null) {//если квадрат доски не пустой, читаем фигуру и формируем тег img
-                    var t = board_arr[y][x].type;
-                    var c = board_arr[y][x].color;
-                    if (t == "r") {
-                        figure = "r" + c + ".png";
-                    } //rook
-                    if (t == "n") {
-                        figure = "n" + c + ".png";
-                    } //knight
-                    if (t == "b") {
-                        figure = "b" + c + ".png";
-                    } //bishop
-                    if (t == "q") {
-                        figure = "q" + c + ".png";
-                    } //queen
-                    if (t == "k") {
-                        figure = "k" + c + ".png";
-                    } //kong
-                    if (t == "p") {
-                        figure = "p" + c + ".png";
-                    } //pawn
-
-                    var img = "<img src=\"img/figures/" + figure + "\" width=\"" + (square_wh - 5) + "\" height=\"" + (square_wh - 5) + "\">";
-                } else {
-                    var img = "";
-                }
-                if (x == 0) { //coordinates 123 отрисовка координат цифровых
-                    if (y <= 7) {
-                        coordinates = 8 - y;
-                        if (y == 7) {
-                            coordinates += "a";
-                        }
-                    }
-                } else if (y == 7) { //coordinates ABC отрисовка координат буквенных
-                    if (x <= 7) {
-                        coordinates = coord_abc[x];
-                    }
-                } else {
-                    coordinates = "";
-                }
-                table += "<td><div align=\"center\" id=\"" + arrabc[x] + (8 - y) + "\" class=\"" + color + " square\" style=\"width: " + square_wh + "px; height: " + square_wh + "px\">" + img + "<span>" + coordinates + "</span></div></td>";
-            }
-            table += "</tr>";
+    $("#error").hide();//hide error div
+    $("#button_enter").click(function() {
+        var error_mess = "";
+        var login = $("#login").val();
+        var pass = $("#pass").val();
+        if (login.length < 3) {
+            error_mess += " Логин должен быть больше 2х символов!";
         }
-        table += "</table>";
-        $(div_name).append(table);
+        if (pass.length < 3) {
+            error_mess += " Пароль должен быть больше 2х символов!";
+        }
+        if (login.length > 10) {
+            error_mess += " Логин должен быть меньше 10ти символов!";
+        }
+        if (pass.length > 10) {
+            error_mess += " Пароль должен быть меньше 10ти символов!";
+        }
+        if (login.match("^[a-zA-Z0-9 ]*$") == null) {
+            error_mess += " Логин должен состоять только из латинских символов и цифр!";
+        }
+        if (pass.match("^[a-zA-Z0-9 ]*$") == null) {
+            error_mess += " Пароль должен состоять только из латинских символов и цифр!";
+        }
         
-        //check game over
-        if_gameover = chess.game_over();
-        //шаг
-        if_check = chess.in_check();
-        //мат
-        if_mate = chess.in_checkmate();
-        //пат
-        if_stalemate = chess.in_stalemate();
-        
-        var mess = "";
-        if (if_gameover) {mess += "Игра окончена!";}
-        if (if_check) {mess += " Шаг!";}
-        if (if_mate) {mess += " Мат!";}
-        if (if_stalemate) {mess += " Пат!";}
-        
-        $("#gameover > span").text(mess);
-        //turn
-        turn = chess.turn();
-        if (turn == "b") {
-            turn = "Ход черных";
+        if (error_mess == "") {
+            window.location = "menu.html";
+            localStorage.login = login;
+            localStorage.pass = pass;
         } else {
-            turn = "Ход белых";
+            console.log(error_mess);
+            $("#error").text(error_mess)
+            $("#error").show();
         }
-        $("#turn").text(turn);
-        //PGN
-        pgn = chess.pgn();
-        $("#pgn").text(pgn);
-    }
+        
+        console.log(login);
+        console.log(pass);
+    });
 
-    function move() {
-        var from, to;
-        var check = 0;
-        $(div_name + " > table > tbody > tr > td > div").each(function(event) {
-            $(this).mouseup(function() {
-                $(this).removeClass("bg-light");
-                $(this).removeClass("bg-info");
-                $(this).addClass("bg-warning");
-                var position = $(this).attr("id");
-                //console.log(position);
-                check++;
-                if (check == 1) {
-                    from = position;
-                    console.log("from: " + from);
-                }
-                if (check == 2) {
-                    to = position;
-                    console.log("to: " + to);
-                    var result = chess.move({//ходим
-                        from: from,
-                        to: to,
-                        promotion: "q"
-                    });
-                    console.log(result);
-                    board_arr = chess.board();
-                    console.log(board_arr);
-                    drawing_board();
-                    move();
-                    
-                    check = 0;
-                }
-            });
-        });
-    }
-
-    var chess = new Chess();
-    chess.load("r2qr1k1/1Qp2ppp/p2p4/4b3/8/1PN5/P4PPP/2R1R1K1 b - - 0 1");
-    var board_arr = chess.board();
-    console.log(board_arr);
-    drawing_board();
-    move();
 </script>
 
 </html>
