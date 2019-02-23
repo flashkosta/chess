@@ -28,32 +28,39 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script>
+    //TODO: сделать удаление fen нотации
+    //TODO: сделать выбор фигуры при promotion pawn
+    //TODO: живые нотации
+    //NOTE (живые нотации) при возвращении к определенной позиции, все, что было после этой позиции удаляется, а игрок может
     //объявляем переменные
     var div_name = "#board2";
-    var pgn, turn, if_gameover, if_check, if_mate, if_stalemate;
+    var pgn, turn, if_gameover, if_check, if_mate, if_stalemate, load_pgn, fen_array_step, notation;
     var fen_array = [];
     var pgn_array = [];
 
     function PGNLive() {//живые нотации
-        var notation = chess.pgn();
-        console.log(pgn_array);
+        
+        
         for(var i = 0; i<=pgn_array.length; i++) {
+            console.log(pgn_array[i]);
             
-            notation = notation.replace(pgn_array[i], "<div id=\"step" + i + "\">" + pgn_array[i] + "</div>");
+            notation = notation.replace(pgn_array[i], "<div class=\"d-inline bg-warning \" id=\"step" + i + "\">" + pgn_array[i] + "</div>");
         }
-        console.log(notation);
+        notation = notation.replace("[SetUp \"1\"]\n[FEN \"" + load_pgn + "\"]", "");//удаляем ненужную строку из PGN, которая появляется при первой загрузке с load(fen)
+        //notation = notation.replace("[SetUp \"1\"]\n[FEN \"" + fen_array_step + "\"]", "");
+        
         $("#pgn").html(notation);
+        
         $( " #pgn > div" ).each(function(event) {
             $(this).mouseup(function() {
                 var step = $(this).attr("id").replace("step", "");
-                
+                fen_array_step = fen_array[step];
                 chess.load(fen_array[step]);
                 board_arr = chess.board();
                 drawing_board();
                 move();
             });
         });
-        
     }
     
     function drawing_board() {//рисуем доску
@@ -175,11 +182,11 @@
                 var position = $(this).attr("id");
                 //console.log(position);
                 check++;
-                if (check == 1) {
+                if (check == 1) {//первое нажатие
                     from = position;
                     console.log("from: " + from);
                 }
-                if (check == 2) {
+                if (check == 2) {//второе нажатие
                     to = position;
                     console.log("to: " + to);
                     var result = chess.move({//ходим
@@ -199,14 +206,19 @@
                     drawing_board();
                     move();
                     
-                    check = 0;
+                    check = 0;//обнуляем нажатие
                 }
             });
         });
     }
 
+    load_pgn = "r2qr1k1/1Qp2ppp/p2p4/4b3/8/1PN5/P4PPP/2R1R1K1 b - - 0 1";
+    
     var chess = new Chess();
-    //chess.load("r2qr1k1/1Qp2ppp/p2p4/4b3/8/1PN5/P4PPP/2R1R1K1 b - - 0 1");
+    chess.load(load_pgn);
+    
+    notation = chess.pgn();
+    
     var board_arr = chess.board();
     console.log(board_arr);
     drawing_board();
