@@ -61,7 +61,7 @@
         console.log("NOTATION " + notation);
         
         for(var i = 0; i<=pgn_array.length; i++) {
-            notation = notation.replace(pgn_array[i], "<div class=\"d-inline bg-warning \" id=\"step" + i + "\">" + pgn_array[i] + "</div>");
+            notation = notation.replace(pgn_array[i], "<div class=\"d-inline bg-warning \" id=\"step" + i + "\"><button type=\"button\" class=\"btn btn-warning\">" + pgn_array[i] + "</button></div>");
         }
         
         $("#pgn").html(notation);
@@ -235,9 +235,7 @@
     load_pgn = "r2qr1k1/1Qp2ppp/p2p4/4b3/8/1PN5/P4PPP/2R1R1K1 b - - 0 1";
     
     var chess = new Chess();
-    //chess.load(load_pgn);
-    //fen_array.push(chess.fen());
-    
+    chess.load(load_pgn);
     
     var board_arr = chess.board();
     console.log(board_arr);
