@@ -72,11 +72,7 @@
                 fen_array_step = fen_array[step];
                 chess.load(fen_array[step]);
                 console.log("STEP " + step);
-                //if (step == 0) {
-                    //pgn_state = 1;
-                //} else {
-                    pgn_state = step;
-                //}
+                pgn_state = step;
                 board_arr = chess.board();
                 drawing_board();
                 move();
@@ -172,7 +168,7 @@
         
         var mess = "";
         if (if_gameover) {mess += "Игра окончена!";}
-        if (if_check) {mess += " Шаг!";}
+        if (if_check) {mess += " Шах!";}
         if (if_mate) {mess += " Мат!";}
         if (if_stalemate) {mess += " Пат!";}
         
